@@ -7,6 +7,7 @@
 
 #ifdef PART1
 
+#include "xc.h"
 #include "BOARD.h"
 #include "serial.h"
 #include "RC_Servo.h"
@@ -16,6 +17,8 @@
 #include "AD.h"
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include "timers.h"
 
 /*
  * 
@@ -26,10 +29,12 @@ int main(void)
     RC_Init();
     AD_Init();
     LED_Init();
+    SERIAL_Init();
+    TIMERS_Init();
     
     RC_AddPins(RC_PORTX03);
     AD_AddPins(AD_PORTW3);
-    LED_AddBanks(LED_BANK1 || LED_BANK2 || LED_BANK3);
+    LED_AddBanks(LED_BANK1 || LED_BANK2 );
     
     printf("Running part 1: RC Servo\n");
     
@@ -43,7 +48,7 @@ int main(void)
             unsigned int adcTrimmed = (adcRaw >> 6) & 0x0F;
             unsigned int LEDTrimmed = (adcRaw >> 7) & 0x0F;
         
-            
+    
             //conversion from ad value to pwm 
             //1500 middle, +-45 = 400us range
             //1100 + 7*5 * 53 = ~1500
@@ -62,7 +67,7 @@ int main(void)
             LED_SetBank(LED_BANK2, LEDPattern >>4 );
             
             
-            //LED_SetBank(LED_BANK3, adcTrimmed);
+            LED_SetBank(LED_BANK3, adcTrimmed);
             
             //setting servo 
             RC_SetPulseTime(RC_PORTX03, pwmVal);
