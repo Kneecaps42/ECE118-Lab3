@@ -4,6 +4,9 @@ dist/
 nbproject/private/
 **/debug/
 **/production/
+nbproject/
+!nbproject/configurations.xml
+!nbproject/project.xml
 
 # IDE generated files
 .generated_files
