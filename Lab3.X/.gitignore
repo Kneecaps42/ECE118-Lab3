@@ -1,1 +1,22 @@
+# Build artifacts and temporary files
+build/
+dist/
+nbproject/private/
+**/debug/
+**/production/
+
+# IDE generated files
 .generated_files
+disassembly/
+
+# Objects and Libraries
+*.o
+*.p1
+*.d
+*.elf
+*.hex
+*.cof
+
+# Operating System files
+Thumbs.db
+.DS_Store
