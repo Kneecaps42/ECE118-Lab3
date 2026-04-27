@@ -7,9 +7,6 @@
 
 #ifdef PART1
 
-#include <stdint.h>
-#include <stdio.h>
-
 #include "BOARD.h"
 #include "serial.h"
 #include "RC_Servo.h"
@@ -17,6 +14,8 @@
 #include "IO_Ports.h"
 #include "pwm.h"
 #include "AD.h"
+#include <stdint.h>
+#include <stdio.h>
 
 /*
  * 
