@@ -20,6 +20,11 @@
 #include <stdlib.h>
 #include "timers.h"
 
+
+#define pwmMID 1500
+#define pwmMAX 2000
+#define pwmMIN 1000
+
 /*
  * 
  */
@@ -34,7 +39,7 @@ int main(void)
     
     RC_AddPins(RC_PORTX03);
     AD_AddPins(AD_PORTW3);
-    LED_AddBanks(LED_BANK1 || LED_BANK2);
+    LED_AddBanks(LED_BANK1 || LED_BANK2 || LED_BANK3);
     
     printf("Running part 1: RC Servo\n");
     
@@ -59,7 +64,8 @@ int main(void)
             //1100 + 7*5 * 53 = ~1500
             //1500 - (7.5 * 53) = ~1100
             //1500 + (7.5 * 53) = ~1900
-            pwmVal = 1100 + (adcTrimmed * 53);
+            
+            pwmVal = pwmMIN + (adcTrimmed * 120);
             
             //setting servo 
             RC_SetPulseTime(RC_PORTX03, pwmVal);      
@@ -74,6 +80,7 @@ int main(void)
 
         LED_SetBank(LED_BANK1, LEDPattern);
         LED_SetBank(LED_BANK2, LEDPattern >> 4);
+        LED_SetBank(LED_BANK3, LEDPattern >> 4);
     }
     
     // While loop above
