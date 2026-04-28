@@ -56,6 +56,7 @@ int main(void)
                 
                 //tramsate 10-bit ADC into pwm
                 dutyCycle = (adcRaw *1000) / 1023;
+                printf("Duty Cycle: %d", (int)dutyCycle);
                 
                 //setting duty cycle
                 PWM_SetDutyCycle(PWM_PORTX11, dutyCycle);     
