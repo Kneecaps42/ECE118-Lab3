@@ -53,26 +53,26 @@ int main(void)
         if(AD_IsNewDataReady()) 
         {
             
-            //read and store pin value
-            adcRaw = AD_ReadADPin(AD_PORTW3); 
-            adcTrimmed = (adcRaw >> 6) & 0x0F;
-            LEDTrimmed = (adcRaw >> 7) & 0x0F;
-        
-    
-            //conversion from ad value to pwm 
-            //1500 middle, +-45 = 400us range
-            //1100 + 7*5 * 53 = ~1500
-            //1500 - (7.5 * 53) = ~1100
-            //1500 + (7.5 * 53) = ~1900
-            
-            pwmVal = pwmMIN + (adcTrimmed * 120);
-            
-            //setting servo 
-            RC_SetPulseTime(RC_PORTX03, pwmVal);      
+                //read and store pin value
+                adcRaw = AD_ReadADPin(AD_PORTW3); 
+                adcTrimmed = (adcRaw >> 6) & 0x0F;
+                LEDTrimmed = (adcRaw >> 7) & 0x0F;
+
+
+                //conversion from ad value to pwm 
+                //1500 middle, +-45 = 400us range
+                //1100 + 7*5 * 53 = ~1500
+                //1500 - (7.5 * 53) = ~1100
+                //1500 + (7.5 * 53) = ~1900
+
+                pwmVal = pwmMIN + (adcTrimmed * 120);
+
+                //setting servo 
+                RC_SetPulseTime(RC_PORTX03, pwmVal);      
         }
         
         //setting lED
-        LEDPattern = 0x01;
+        LEDPattern = 0x00;
         for(int i = 0; i< LEDTrimmed;i++)
         {
             LEDPattern |= LEDPattern << 1;
