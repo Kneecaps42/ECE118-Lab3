@@ -34,19 +34,24 @@ int main(void)
     
     RC_AddPins(RC_PORTX03);
     AD_AddPins(AD_PORTW3);
-    LED_AddBanks(LED_BANK1 || LED_BANK2 );
+    LED_AddBanks(LED_BANK1 || LED_BANK2);
     
     printf("Running part 1: RC Servo\n");
+    
+    unsigned int adcRaw = 0, adcTrimmed = 0, LEDTrimmed = 0, pwmVal = 1100, LEDPattern;
+    
+    // While loop below
     
     while(1)
     {
         //if new data is avail
-        if(AD_IsNewDataReady() == TRUE) {
+        if(AD_IsNewDataReady()) 
+        {
             
             //read and store pin value
-            unsigned int adcRaw = AD_ReadADPin(AD_PORTW3); 
-            unsigned int adcTrimmed = (adcRaw >> 6) & 0x0F;
-            unsigned int LEDTrimmed = (adcRaw >> 7) & 0x0F;
+            adcRaw = AD_ReadADPin(AD_PORTW3); 
+            adcTrimmed = (adcRaw >> 6) & 0x0F;
+            LEDTrimmed = (adcRaw >> 7) & 0x0F;
         
     
             //conversion from ad value to pwm 
@@ -54,30 +59,26 @@ int main(void)
             //1100 + 7*5 * 53 = ~1500
             //1500 - (7.5 * 53) = ~1100
             //1500 + (7.5 * 53) = ~1900
-            unsigned int pwmVal = 1100 + (adcTrimmed * 53);
-            
-            
-            //setting lED
-            unsigned int LEDPattern = 0x01;
-            for(int i = 0; i< LEDTrimmed;i++){
-             LEDPattern |= LEDPattern << 1;
-            }
-            
-            LED_SetBank(LED_BANK1, LEDPattern);
-            LED_SetBank(LED_BANK2, LEDPattern >>4 );
-            
-            
-            LED_SetBank(LED_BANK3, adcTrimmed);
+            pwmVal = 1100 + (adcTrimmed * 53);
             
             //setting servo 
-            RC_SetPulseTime(RC_PORTX03, pwmVal);
-                     
-                     
+            RC_SetPulseTime(RC_PORTX03, pwmVal);      
+        }
+        
+        //setting lED
+        LEDPattern = 0x01;
+        for(int i = 0; i< LEDTrimmed;i++)
+        {
+            LEDPattern |= LEDPattern << 1;
+        }
+
+        LED_SetBank(LED_BANK1, LEDPattern);
+        LED_SetBank(LED_BANK2, LEDPattern >> 4);
     }
+    
+    // While loop above
     
     BOARD_End();
     return 0;
-}
-
 }
 #endif
