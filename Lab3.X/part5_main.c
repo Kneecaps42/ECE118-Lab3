@@ -1,11 +1,12 @@
+
 /* 
- * File:   part2main.c
+ * File:   part5main.c
  * Author: root
  *
  * Created on April 27, 2026, 1:55 PM
  */
 
-#ifdef PART2
+#ifdef PART5
 
 #include "xc.h"
 #include "BOARD.h"
@@ -18,7 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "timers.h"
-
+#include "Stepper.h"
 
 /*
  * 
@@ -26,7 +27,7 @@
 int main(void)
 {
     BOARD_Init();
-    PWM_Init();
+    Stepper_Init();
     AD_Init();
     LED_Init();
     SERIAL_Init();
@@ -36,10 +37,8 @@ int main(void)
     AD_AddPins(AD_PORTW3);
     LED_AddBanks(LED_BANK1 | LED_BANK2 | LED_BANK3);
     
-    PWM_AddPins(PWM_PORTX11);
-    PWM_SetFrequency(PWM_1KHZ);
     
-    printf("Running part 2: DC Motor");
+    printf("Running part 5: Stepper Motor");
     
     unsigned int adcRaw = 0, dutyCycle = 0, ledLevel = 0, LEDPattern = 0;
     
@@ -54,12 +53,7 @@ int main(void)
                 //read and store pin value
                 adcRaw = AD_ReadADPin(AD_PORTW3); 
                 
-                //tramsate 10-bit ADC into pwm
-                dutyCycle = (adcRaw *1000) / 1023;
-                printf("Duty Cycle: %d \n", (int)dutyCycle);
-                
-                //setting duty cycle
-                PWM_SetDutyCycle(PWM_PORTX11, dutyCycle);     
+
         }
         
         //setting lED
