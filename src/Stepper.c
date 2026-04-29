@@ -555,8 +555,10 @@ void __ISR(_TIMER_3_VECTOR) Timer3IntHandler(void)
             FullStepDrive();
 #endif // FULL_STATE_DRIVE
 #ifdef HALF_STEP_DRIVE
+            HalfStepDrive();
 #endif // HALF_STATE_DRIVE
 #ifdef WAVE_DRIVE
+            WaveDrive();
 #endif // WAVE_DRIVE
 #ifdef DRV8811_DRIVE
 #endif // DRV8811 DRIVE
