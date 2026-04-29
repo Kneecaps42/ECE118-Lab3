@@ -1,12 +1,13 @@
 
+
 /* 
- * File:   part5main.c
+ * File:   part6main.c
  * Author: root
  *
  * Created on April 27, 2026, 1:55 PM
  */
 
-#ifdef PART5
+#ifdef PART6
 
 #include "xc.h"
 #include "BOARD.h"
@@ -41,14 +42,12 @@ int main(void)
     IO_PortsSetPortInputs(PORTX, PIN3);
     printf("Running part 5: Stepper Motor");
     
-    unsigned int adcRaw = 0, stepRate = 0, ledLevel = 0, LEDPattern = 0,  dir = 0;
-    
-
+    unsigned int adcRaw = 0, stepRate = 0, ledLevel = 0, LEDPattern = 0, unsigned int dir = 0;
     
     // While loop below
     
     while(1)
-    {   
+    {
         //if new data is avail
         if(AD_IsNewDataReady()) 
         {
@@ -61,12 +60,19 @@ int main(void)
                 adcRaw = AD_ReadADPin(AD_PORTW3); 
                 
                 //translate adc value to stepper rate
-                stepRate = (adcRaw * 1000) /1023;
-                printf("StepRate: %d \n", (int)stepRate);
+                stepRate = (adcRaw * 200) /1023;
+                
                 //set stepper rate
-                Stepper_SetRate(stepRate);
+                Stepper_SetRate(dir, stepRate);
+                if (adcRaw)
+                {
+                    Stepper_StartSteps();
+                }
+                else
+                {
+                    Stepper_StopSteps();
+                }
 
-                Stepper_InitSteps(dir, 10);
         }
         
         //setting lED

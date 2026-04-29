@@ -34,8 +34,8 @@
  * STEPPER MODE #DEFINES                                                       *
  ******************************************************************************/
 
-#define FULL_STEP_DRIVE
-//#define HALF_STEP_DRIVE
+//#define FULL_STEP_DRIVE
+#define HALF_STEP_DRIVE
 //#define WAVE_DRIVE
 //#define DRV8811_DRIVE
 
