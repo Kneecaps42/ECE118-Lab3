@@ -21,6 +21,7 @@
 #include "timers.h"
 #include "Stepper.h"
 
+
 /*
  * 
  */
@@ -37,10 +38,10 @@ int main(void)
     AD_AddPins(AD_PORTW3);
     LED_AddBanks(LED_BANK1 | LED_BANK2 | LED_BANK3);
     
-    
+    IO_PortsSetPortInputs(PORTX, PIN3);
     printf("Running part 5: Stepper Motor");
     
-    unsigned int adcRaw = 0, dutyCycle = 0, ledLevel = 0, LEDPattern = 0;
+    unsigned int adcRaw = 0, stepRate = 0, ledLevel = 0, LEDPattern = 0, unsigned int dir = 0;
     
     // While loop below
     
@@ -50,9 +51,26 @@ int main(void)
         if(AD_IsNewDataReady()) 
         {
             
+                
+                //read and store direction pin value
+                dir = PORTX04_BIT;
+                
                 //read and store pin value
                 adcRaw = AD_ReadADPin(AD_PORTW3); 
                 
+                //translate adc value to stepper rate
+                stepRate = (adcRaw * 200) /1023;
+                
+                //set stepper rate
+                Stepper_SetRate(dir, stepRate);
+                if (adcRaw)
+                {
+                    Stepper_StartSteps();
+                }
+                else
+                {
+                    Stepper_StopSteps();
+                }
 
         }
         
@@ -70,7 +88,7 @@ int main(void)
         LED_SetBank(LED_BANK3, (LEDPattern >> 4) & 0x0F);
     }
     // While loop above
-    
+        
     BOARD_End();
     return 0;
 }
