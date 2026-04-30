@@ -523,7 +523,7 @@ void WaveDrive(void)
 
  Author: Gabriel Hugh Elkaim, 2011.12.15 16:42
  ****************************************************************************/
-void __ISR(_TIMER_3_VECTOR) Timer3IntHandler(void)
+void __ISR(_TIMER_3_VECTOR, IPL3AUTO) Timer3IntHandler(void)
 {
     static uint16_t timerLoopCount = 0;
     

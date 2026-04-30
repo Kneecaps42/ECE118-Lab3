@@ -35,9 +35,9 @@
  ******************************************************************************/
 
 //#define FULL_STEP_DRIVE
-#define HALF_STEP_DRIVE
+//#define HALF_STEP_DRIVE
 //#define WAVE_DRIVE
-//#define DRV8811_DRIVE
+#define DRV8811_DRIVE
 
 #if defined FULL_STEP_DRIVE && ( defined HALF_STEP_DRIVE || defined WAVE_DRIVE || defined DRV8811_DRIVE )
 #error "Define only one stepper drive mode at a time"

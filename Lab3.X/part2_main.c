@@ -32,16 +32,19 @@ int main(void)
     SERIAL_Init();
     TIMERS_Init();
     
-  
+    IO_PortsSetPortInputs(PORTY, PIN8);
+    IO_PortsSetPortOutputs(PORTZ, PIN4);
+    IO_PortsSetPortOutputs(PORTZ, PIN6);
+
     AD_AddPins(AD_PORTW3);
     LED_AddBanks(LED_BANK1 | LED_BANK2 | LED_BANK3);
     
     PWM_AddPins(PWM_PORTX11);
-    PWM_SetFrequency(PWM_1KHZ);
+    PWM_SetFrequency(1);
     
     printf("Running part 2: DC Motor");
     
-    unsigned int adcRaw = 0, dutyCycle = 0, ledLevel = 0, LEDPattern = 0;
+    unsigned int adcRaw = 0, dutyCycle = 0, ledLevel = 0, LEDPattern = 0, dir = 0;
     
     // While loop below
     
@@ -51,6 +54,21 @@ int main(void)
         if(AD_IsNewDataReady()) 
         {
             
+                //read and store direction pin value
+                dir = PORTY08_BIT;
+                
+                if(dir == 1){
+                    IO_PortsSetPortBits(PORTZ, PIN4);
+                    IO_PortsClearPortBits(PORTZ, PIN6);  
+                }
+                
+                else{
+                    IO_PortsClearPortBits(PORTZ, PIN4);
+                    IO_PortsSetPortBits(PORTZ, PIN6); 
+                }
+                
+                //printf("Direction: %d \n", (int)dir);
+                
                 //read and store pin value
                 adcRaw = AD_ReadADPin(AD_PORTW3); 
                 
@@ -60,6 +78,8 @@ int main(void)
                 
                 //setting duty cycle
                 PWM_SetDutyCycle(PWM_PORTX11, dutyCycle);     
+                
+                
         }
         
         //setting lED
@@ -72,8 +92,16 @@ int main(void)
         }
          
         LED_SetBank(LED_BANK1, LEDPattern & 0x0F);
-        LED_SetBank(LED_BANK2, (LEDPattern >> 4) & 0x0F);
+        
         LED_SetBank(LED_BANK3, (LEDPattern >> 4) & 0x0F);
+        
+        if(dir == 1){
+            LED_SetBank(LED_BANK2, 0x00);                   
+        }
+        else{
+            LED_SetBank(LED_BANK2, 0xFF);
+        }
+        
     }
     // While loop above
     
