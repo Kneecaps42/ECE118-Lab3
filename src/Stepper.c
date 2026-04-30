@@ -508,6 +508,18 @@ void WaveDrive(void)
     }
 }
 
+void DRV8811Drive(void)
+{
+    case step_one:
+        COIL_A_DIRECTION = 1;
+        coilState = step_two;
+        break;
+    case step_two:
+        COIL_A_DIRECTION = 0;
+        coilState = step_one;
+        break;
+}
+
 /****************************************************************************
  Function: Timer3IntHandler
 
@@ -561,6 +573,7 @@ void __ISR(_TIMER_3_VECTOR, IPL3AUTO) Timer3IntHandler(void)
             WaveDrive();
 #endif // WAVE_DRIVE
 #ifdef DRV8811_DRIVE
+            DRV8811Drive();
 #endif // DRV8811 DRIVE
             break;
         }
