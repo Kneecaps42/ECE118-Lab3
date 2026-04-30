@@ -510,14 +510,17 @@ void WaveDrive(void)
 
 void DRV8811Drive(void)
 {
-    case step_one:
-        COIL_A_DIRECTION = 1;
-        coilState = step_two;
-        break;
-    case step_two:
-        COIL_A_DIRECTION = 0;
-        coilState = step_one;
-        break;
+    switch (coilState)
+    {
+        case step_one:
+            COIL_A_DIRECTION = 1;
+            coilState = step_two;
+            break;
+        case step_two:
+            COIL_A_DIRECTION = 0;
+            coilState = step_one;
+            break;
+    }
 }
 
 /****************************************************************************
